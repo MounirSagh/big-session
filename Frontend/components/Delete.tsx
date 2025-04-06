@@ -1,17 +1,20 @@
 import React from 'react';
 import { Button } from '@mui/material';
 
-const Delete = ({ bugId, onDelete }: any) => {
+interface DeleteProps {
+  bugId: string;
+  onDelete: (id: string) => void;
+}
+
+const Delete: React.FC<DeleteProps> = ({ bugId, onDelete }) => {
   const handleDelete = () => {
-    onDelete(bugId); 
+    onDelete(bugId);
   };
 
   return (
-    <div>
-      <Button variant="contained" color="error" onClick={handleDelete}>
-        Delete Bug
-      </Button>
-    </div>
+    <Button variant="contained" color="error" onClick={handleDelete}>
+      Delete Bug
+    </Button>
   );
 };
 

@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
 import { Button, TextField, MenuItem, Select, InputLabel, FormControl } from '@mui/material';
 
-const Update = ({ bug, onUpdate }: any) => {
+interface UpdateProps {
+  bug: any;
+  onUpdate: (updatedBug: any) => void;
+}
+
+const Update: React.FC<UpdateProps> = ({ bug, onUpdate }) => {
   const [title, setTitle] = useState(bug.title);
   const [description, setDescription] = useState(bug.description);
   const [status, setStatus] = useState(bug.status);
@@ -10,17 +15,9 @@ const Update = ({ bug, onUpdate }: any) => {
 
   const handleUpdate = (e: React.FormEvent) => {
     e.preventDefault();
-    const updatedBug = {
-      id: bug.id,
-      title,
-      description,
-      status,
-      priority,
-      assignee,
-    };
-    onUpdate(updatedBug); 
+    const updatedBug = { id: bug.id, title, description, status, priority, assignee };
+    onUpdate(updatedBug);
   };
-
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -53,11 +50,7 @@ const Update = ({ bug, onUpdate }: any) => {
         />
         <FormControl fullWidth required>
           <InputLabel>Status</InputLabel>
-          <Select
-            value={status}
-            onChange={(e) => setStatus(e.target.value)}
-            label="Status"
-          >
+          <Select value={status} onChange={(e) => setStatus(e.target.value)} label="Status">
             <MenuItem value="open">Open</MenuItem>
             <MenuItem value="in progress">In Progress</MenuItem>
             <MenuItem value="closed">Closed</MenuItem>
@@ -75,11 +68,8 @@ const Update = ({ bug, onUpdate }: any) => {
           onChange={(e) => setAssignee(e.target.value)}
           fullWidth
         />
-        <Button type="submit" variant="contained" color="primary">
-          Update Bug
-        </Button>
+        <Button type="submit" variant="contained" color="primary">Update Bug</Button>
       </form>
-
       <div style={{ color: getStatusColor(status), marginTop: '10px' }}>
         Status: {status}
       </div>

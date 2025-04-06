@@ -1,25 +1,21 @@
 import React, { useState } from 'react';
 import { Button, TextField, MenuItem, Select, InputLabel, FormControl } from '@mui/material';
 
-const Add = ({ onAdd }: any) => {
+interface AddProps {
+  onAdd: (newBug: any) => void;
+}
+
+const Add: React.FC<AddProps> = ({ onAdd }) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [status, setStatus] = useState('open'); 
+  const [status, setStatus] = useState('open');
   const [priority, setPriority] = useState('');
   const [assignee, setAssignee] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const newBug = {
-      id: Math.random(),  
-      title,
-      description,
-      status,
-      priority,
-      assignee,
-    };
-    onAdd(newBug);  
-   
+    const newBug = { id: Math.random(), title, description, status, priority, assignee };
+    onAdd(newBug);
     setTitle('');
     setDescription('');
     setStatus('open');
@@ -27,7 +23,6 @@ const Add = ({ onAdd }: any) => {
     setAssignee('');
   };
 
-  
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'open': return 'green';
@@ -59,11 +54,7 @@ const Add = ({ onAdd }: any) => {
         />
         <FormControl fullWidth required>
           <InputLabel>Status</InputLabel>
-          <Select
-            value={status}
-            onChange={(e) => setStatus(e.target.value)}
-            label="Status"
-          >
+          <Select value={status} onChange={(e) => setStatus(e.target.value)} label="Status">
             <MenuItem value="open">Open</MenuItem>
             <MenuItem value="in progress">In Progress</MenuItem>
             <MenuItem value="closed">Closed</MenuItem>
@@ -81,11 +72,8 @@ const Add = ({ onAdd }: any) => {
           onChange={(e) => setAssignee(e.target.value)}
           fullWidth
         />
-        <Button type="submit" variant="contained" color="primary">
-          Add Bug
-        </Button>
+        <Button type="submit" variant="contained" color="primary">Add Bug</Button>
       </form>
-
       <div style={{ color: getStatusColor(status), marginTop: '10px' }}>
         Status: {status}
       </div>
