@@ -1,18 +1,14 @@
 import React from 'react';
 import { Button } from '@mui/material';
 
-const Delete = ({ onDelete, bugId }: { onDelete: (id: string) => void, bugId: string }) => {
+const Delete = ({ bugId, onDelete }: any) => {
   const handleDelete = () => {
-    onDelete(bugId);
+    onDelete(bugId); 
   };
 
   return (
     <div>
-      <Button
-        onClick={handleDelete}
-        variant="contained"
-        color="secondary"
-      >
+      <Button variant="contained" color="error" onClick={handleDelete}>
         Delete Bug
       </Button>
     </div>

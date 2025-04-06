@@ -1,72 +1,89 @@
-import React, { useState, useEffect } from 'react';
-import { TextField, Button } from '@mui/material';
+import React, { useState } from 'react';
+import { Button, TextField, MenuItem, Select, InputLabel, FormControl } from '@mui/material';
 
-const Update = ({ onUpdate, bug }: { onUpdate: (updatedBug: any) => void, bug: any }) => {
-
+const Update = ({ bug, onUpdate }: any) => {
   const [title, setTitle] = useState(bug.title);
   const [description, setDescription] = useState(bug.description);
   const [status, setStatus] = useState(bug.status);
   const [priority, setPriority] = useState(bug.priority);
   const [assignee, setAssignee] = useState(bug.assignee);
 
-
-  useEffect(() => {
-    setTitle(bug.title);
-    setDescription(bug.description);
-    setStatus(bug.status);
-    setPriority(bug.priority);
-    setAssignee(bug.assignee);
-  }, [bug]);
-
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleUpdate = (e: React.FormEvent) => {
     e.preventDefault();
+    const updatedBug = {
+      id: bug.id,
+      title,
+      description,
+      status,
+      priority,
+      assignee,
+    };
+    onUpdate(updatedBug); 
+  };
 
-    const updatedBug = { title, description, status, priority, assignee };
 
-    onUpdate(updatedBug);
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'open': return 'green';
+      case 'in progress': return 'orange';
+      case 'closed': return 'red';
+      default: return 'gray';
+    }
   };
 
   return (
-    <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-      <TextField
-        label="Title"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-        variant="outlined"
-        required
-      />
-      <TextField
-        label="Description"
-        value={description}
-        onChange={(e) => setDescription(e.target.value)}
-        variant="outlined"
-        required
-      />
-      <TextField
-        label="Status"
-        value={status}
-        onChange={(e) => setStatus(e.target.value)}
-        variant="outlined"
-        required
-      />
-      <TextField
-        label="Priority"
-        value={priority}
-        onChange={(e) => setPriority(e.target.value)}
-        variant="outlined"
-        required
-      />
-      <TextField
-        label="Assignee"
-        value={assignee}
-        onChange={(e) => setAssignee(e.target.value)}
-        variant="outlined"
-        required
-      />
-      <Button type="submit" variant="contained" color="primary">
-        Update Bug
-      </Button>
-    </form>
+    <div>
+      <h3>Update Bug</h3>
+      <form onSubmit={handleUpdate}>
+        <TextField
+          label="Title"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          required
+          fullWidth
+        />
+        <TextField
+          label="Description"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          required
+          multiline
+          rows={4}
+          fullWidth
+        />
+        <FormControl fullWidth required>
+          <InputLabel>Status</InputLabel>
+          <Select
+            value={status}
+            onChange={(e) => setStatus(e.target.value)}
+            label="Status"
+          >
+            <MenuItem value="open">Open</MenuItem>
+            <MenuItem value="in progress">In Progress</MenuItem>
+            <MenuItem value="closed">Closed</MenuItem>
+          </Select>
+        </FormControl>
+        <TextField
+          label="Priority"
+          value={priority}
+          onChange={(e) => setPriority(e.target.value)}
+          fullWidth
+        />
+        <TextField
+          label="Assignee"
+          value={assignee}
+          onChange={(e) => setAssignee(e.target.value)}
+          fullWidth
+        />
+        <Button type="submit" variant="contained" color="primary">
+          Update Bug
+        </Button>
+      </form>
+
+      <div style={{ color: getStatusColor(status), marginTop: '10px' }}>
+        Status: {status}
+      </div>
+    </div>
   );
 };
 
